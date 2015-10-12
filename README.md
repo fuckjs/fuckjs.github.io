@@ -1,0 +1,1 @@
+# fuckjs.github.io
