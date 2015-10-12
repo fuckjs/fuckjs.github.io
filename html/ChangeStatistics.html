@@ -1,0 +1,201 @@
+<html>
+<body>
+<section class="content-header">
+  <h1>
+    兑券
+    <small></small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="./index.html"><i class="fa fa-home"></i> 主页</a></li>
+    <li>数据统计</li>
+    <li class="active">兑券</li>
+  </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+  <!-- 注意消息-->
+  <div class="callout callout-success">
+    <p>
+      ※ 可根据日期、兑券渠道过滤筛选
+    </p>
+  </div>
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title">
+        <span class="data_time text-red">2015年8月23日 至 2015年9月23日</span> 所有兑券渠道 的数据：
+      </h3>
+    </div><!-- /.box-header -->
+    <div class="box-body no-padding">
+           <div class="col-xs-3">
+            <div class="form-group">
+              <select class="form-control" id="selectDate">
+                <option selected="selected" >过去7天</option>
+                <option>过去30天</option>
+                <option>过去90天</option>
+                <option>自定义</option>
+              </select>
+
+              <div id="customer"></div>
+
+            </div><!-- /.form-group -->
+          </div>
+      <div class="col-xs-3">
+        <div class="form-group">
+          <select id="coupon_select" class="form-control">
+            <option value="" selected="selected">所有渠道</option>
+                <option value="101">12580商城</option>
+                <option value="102">百度票券</option>
+                <option value="103">微信票券</option>
+                <option value="104">盘锦通</option>
+                <option value="106">海外购</option>
+                <option value="107">移动积分</option>
+                <option value="108">京东支付</option>
+                <option value="109">微信支付</option>
+                <option value="110">百度支付</option>
+                <option value="111">支付宝</option>
+                <option value="112">签到</option>
+                <option value="113">优惠券</option>
+          </select>
+        </div><!-- /.form-group -->
+      </div>
+      <div class="col-xs-3">
+        <button class="btn btn-primary btn-sm">查看</button>
+        <button id="exportChange" class="btn btn-success btn-sm">导出</button>
+      </div>
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+      <!--兑换量-->
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">兑换量</h3>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-xs-6">
+              <div class="info-box">
+                <span class="info-box-icon bg-blue"><i class="fa fa-star-o"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">累计兑券金额</span>
+                  <span id="totalExchangePrice" class="info-box-number">38989</span>
+                </div><!-- /.info-box-content -->
+              </div><!-- /.info-box -->
+            </div>
+            <div class="col-xs-6">
+              <div class="info-box">
+                <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">累计兑券量</span>
+                  <span id="totalExchangeCoupons" class="info-box-number">18989</span>
+                </div><!-- /.info-box-content -->
+              </div><!-- /.info-box -->
+            </div>
+          </div>
+          <!-- 图表-->
+          <div class="chart" id="placeholder" style="height: 300px;"></div>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title">
+        统计表格：
+      </h3>
+    </div>
+    <div class="box-body">
+      <table class="table table-striped">
+        <tr>
+          <th>日期</th>
+          <th>兑券金额</th>
+          <th>兑券量</th>
+        </tr>
+        <tbody id="CouponAcceptList">
+        	
+        </tbody>
+        <!--<tr>
+          <td>2015.9.30 10:20:18</td>
+          <td>7000</td>
+          <td>4000</td>
+        </tr>-->
+      </table>
+      <div class="box-footer clearfix">
+      	      <nav>
+                <ul class="pagination">
+                    <div class="tcdPageCode"></div>
+                </ul>
+            </nav>
+        <!--<ul class="pagination no-margin pull-right">
+          <li><a href="#">&laquo;</a></li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">&raquo;</a></li>
+        </ul>-->
+      </div><!-- box-footer-->
+    </div><!-- box-body-->
+  </div><!-- box-->
+</section><!-- /.content -->
+
+<!--
+	作者：liql	
+	时间：2015-09-24
+	描述：兑券统计接口模板
+-->
+<script id="CouponAcceptListTemplate" type="x-tmpl-mustache">
+	{{#CouponAcceptList}}
+	   <tr>
+	   	   <td>{{transdate}}</td>
+	   	   <td>{{exchangePrice}}</td>
+	   	   <td>{{exchangeCoupons}}</td>
+	   </tr>
+	{{/CouponAcceptList}}
+</script>
+
+        <script src="./plugins/jQuery/jQuery-2.1.4.min.js"></script>
+        <!-- Bootstrap 3.3.5 -->
+        <script src="./bootstrap/js/bootstrap.min.js"></script>
+        <!-- date-range-picker -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+        <script src="./plugins/daterangepicker/daterangepicker.js"></script>
+        <!-- Morris.js charts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="./plugins/morris/morris.min.js"></script>
+        <!-- FastClick -->
+        <script src="./plugins/fastclick/fastclick.min.js"></script>
+        <script src="./plugins/common/jquery.flot.js"></script>
+        <script src="./plugins/common/jquery.page.js"></script>
+        <script src="./plugins/common/jquery.cookie.js"></script>
+        <script src="./plugins/common/mustache.min.js"></script>
+        <script src="./plugins/common/common.js"></script>
+        <!-- AdminLTE App -->
+        <script src="./dist/js/app.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="./dist/js/demo.js"></script>
+        <!-- page script -->
+        <script src="./dist/js/index_flot.js"></script>
+  <script src="./dist/js/PublishCouponList.js"></script>
+<!--    <script src="./dist/js/statistics.js"></script>-->
+    <script src="./dist/js/statistics_change.js"></script>
+
+
+<!--<script>
+  var T_element = $('#selectDate');
+  $(T_element).change(function(){
+    if($(T_element).val()=="自定义"){
+      $('#RangeDate').data("daterangepicker").show();
+    }
+  });
+</script>-->
+
+<script>
+
+  useDRPicker('#customer','.data_time');
+//selectViewDRPicker('#selectDate','#customer');
+
+</script>
+
+</body>
+</html>
+
+

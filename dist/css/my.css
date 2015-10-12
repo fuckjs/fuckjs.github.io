@@ -1,0 +1,78 @@
+@charset "utf-8";
+
+.guize {
+    list-style: none;
+}
+.guize > li {
+    margin-top: 10px;
+}
+.width_50 {
+    width: 50px;
+}
+
+
+.my_wrapper{
+    position: absolute;
+    right: 8%;
+    width: 360px;
+    height: 640px;
+    border:1px #f0f0f2  solid;
+    overflow-y: auto;
+
+}
+.my_wrapper .my_header{
+    background: #00CC99;
+    z-index: 10;
+    height: 160px;
+}
+.my_wrapper .my_header  h1 img{
+    margin: 15px;
+    width: 30px;
+    height: 30px;
+}
+.my_wrapper .my_header h1 span{
+    color: white;
+    font-size: 16px;
+}
+.my_wrapper .my_header div{
+    text-align: center;
+    color: white;
+}
+.my_wrapper .my_header div h5,
+.my_wrapper .my_header div h4 {
+    position: relative;
+    top: -15px;
+    padding-top: 5px;
+}
+.my_wrapper .content{
+    background:#f0f0f1;
+}
+.my_wrapper .con_YH {
+    position: relative;
+    top: -20px;
+    z-index: 1;
+}
+.my_wrapper .con_YH h1{
+    font-size: 16px;
+    line-height: 16px;
+}
+.my_wrapper .con_YH div{
+    background: #ffffff;
+}
+.my_wrapper .con_YH div p{
+    font-size: 14px;
+}
+.my_wrapper .con_KF{
+    background: #ffffff;
+    font-size: 16px;
+}
+.my_wrapper .con_KF span{
+    float: right;
+}
+
+.chose_channel {
+    border:1px silver solid;
+}
+.chose_channel .channel_box {
+    margin-left: -10px;
+}
