@@ -111,7 +111,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/2016-01/" style="font-size: 10px;">2016-01</a> <a href="/tags/前端工具/" style="font-size: 10px;">前端工具</a>
+						<a href="/tags/2016-01/" style="font-size: 20px;">2016-01</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/前端工具/" style="font-size: 10px;">前端工具</a>
 					</div>
 				</section>
 				
@@ -180,6 +180,79 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-jQuery源码的一些启示" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/25/jQuery源码的一些启示/" class="article-date">
+  	<time datetime="2016-01-25T06:22:22.000Z" itemprop="datePublished">2016-01-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/25/jQuery源码的一些启示/">关于jQuery源码的一些思考</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="u4E00-_jQuery_u662F_u5982_u4F55_u5411_u5916_u63D0_u4F9B_u63A5_u53E3_u7684_3F"><a href="#u4E00-_jQuery_u662F_u5982_u4F55_u5411_u5916_u63D0_u4F9B_u63A5_u53E3_u7684_3F" class="headerlink" title="一.  jQuery是如何向外提供接口的?"></a><strong>一.  jQuery是如何向外提供接口的?</strong></h3><pre><code>jQuery.fn = jQuery.prototype = function(){
+
+}
+</code></pre><p>例如:  <code>$(&quot;#div1).css()</code>  $()是上方构造函数包装好的一个方法，返回值是一个jQuery对象。因此可以调用jQuery原型上的相关方法。 </p>
+<h3 id="u4E8C-__u6700_u5916_u5C42_u7684_u533F_u540D_u81EA_u6267_u884C_u51FD_u6570_u4E3A_u4EC0_u4E48_u4F20window_u548Cundefined_3F"><a href="#u4E8C-__u6700_u5916_u5C42_u7684_u533F_u540D_u81EA_u6267_u884C_u51FD_u6570_u4E3A_u4EC0_u4E48_u4F20window_u548Cundefined_3F" class="headerlink" title="二. 最外层的匿名自执行函数为什么传window和undefined?"></a><strong>二. 最外层的匿名自执行函数为什么传window和undefined?</strong></h3><p>之所以传window作为参数，有两个原因。</p>
+<ul>
+<li>因为window是作用域最顶端，查找速度比较慢</li>
+<li>在压缩的时候有用</li>
+</ul>
+<p>而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/2016-01/">2016-01</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/前端开发/">前端开发</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/25/jQuery源码的一些启示/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-常用markdown语法" class="article article-type-post" itemscope itemprop="blogPost">
   
