@@ -111,7 +111,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/2016-01/" style="font-size: 20px;">2016-01</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/前端工具/" style="font-size: 10px;">前端工具</a>
+						<a href="/tags/2016-01/" style="font-size: 20px;">2016-01</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/前后端交互/" style="font-size: 10px;">前后端交互</a> <a href="/tags/前端工具/" style="font-size: 10px;">前端工具</a>
 					</div>
 				</section>
 				
@@ -210,50 +210,7 @@
         <p>一个简易的需求，点一个按钮，则向服务器请求资源，不作处理时，多次点击后会有很多个请求在等待。粗暴的解决方式是点一次就将按钮disable掉。还有一种情况，比如加载页面前需要向后台的多个接口调用数据，同时发送两个以上请求；又比如实时搜索，每输入一个字符就要调用一次查询，调用速度很快。这样就会产生问题。</p>
 <p>这种情况如果<strong>不跨域的话ajax是可以通过设置为同步来解决的</strong>。但是在使用jsonp执行跨域请求的时候，如果加载页面前需要向后台的多个接口调用数据，就会比较难解决。做项目的时候自己研究的一个解决方法，通过定时器来查询，仅供参考。思路就是：<strong>在前面加一个变量isAjaxing，当ajax开始调用的时候，判断isAjaxing是不是true；是false则说明没有调用，进入交互部分并关闭定时器；如果是true则说明正在调用，return返回。但因为数据必须查询出来加载到页面上，每隔50ms判断一次，直到可以正常交互</strong>。</p>
 <p>代码如下</p>
-<pre><code>var isAjaxing = false;
-exports.axjsonp = function(url, data, successfn) {
-        data = (data == null || data == &quot;&quot; || typeof(data) == &quot;undefined&quot;) ? {
-            &quot;date&quot;: new Date().getTime()
-        } : data;
-
-        var timer=setInterval(queryAjax,50);
-        function queryAjax(){
-            if(isAjaxing){
-                return;
-            }
-            $.ajax({
-                type: &quot;POST&quot;,
-                url: url,
-                data: data,
-                //返回数据的格式
-                dataType: &quot;jsonp&quot;, //&quot;xml&quot;, &quot;html&quot;, &quot;script&quot;, &quot;json&quot;, &quot;jsonp&quot;, &quot;text&quot;.
-                jsonp: &quot;callbackparam&quot;, //传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)
-                jsonpCallback: &quot;success_jsonpCallback&quot;, //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-                //在请求之前调用的函数
-                beforeSend: function() {
-                    isAjaxing = true;
-                    //$(&quot;#btn_loading&quot;).css(&apos;display&apos;, &apos;&apos;);
-                },
-                //成功返回之后调用的函数             
-                success: function(data) {
-                    successfn(data);
-                },
-                //调用执行后调用的函数
-                complete: function(XMLHttpRequest, textStatus) {
-                    isAjaxing = false;
-                    $(&quot;#btn_loading&quot;).css(&apos;display&apos;, &apos;none&apos;);
-                },
-                //调用出错执行的函数
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    if (XMLHttpRequest.status != &apos;200&apos;) {
-                        alert(&quot;AJAX请求错误：请求状态码：&quot; + XMLHttpRequest.status + &quot; readyState:&quot; + XMLHttpRequest.readyState + &quot;错误：&quot; + textStatus);
-                    }
-                }
-            });
-            clearTimeout(timer);
-        }
-
-};
+<pre><code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">var</span> isAjaxing = <span class="literal">false</span>;</span><br><span class="line">exports.axjsonp = <span class="function"><span class="keyword">function</span>(<span class="params">url, data, successfn</span>) </span>&#123;</span><br><span class="line">		data = (data == <span class="literal">null</span> || data == <span class="string">""</span> || <span class="keyword">typeof</span>(data) == <span class="string">"undefined"</span>) ? &#123;</span><br><span class="line">			<span class="string">"date"</span>: <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()</span><br><span class="line">		&#125; : data;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">var</span> timer=setInterval(queryAjax,<span class="number">50</span>);</span><br><span class="line">		<span class="function"><span class="keyword">function</span> <span class="title">queryAjax</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>(isAjaxing)&#123;</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			$.ajax(&#123;</span><br><span class="line">				type: <span class="string">"POST"</span>,</span><br><span class="line">				url: url,</span><br><span class="line">				data: data,</span><br><span class="line">				<span class="comment">//返回数据的格式</span></span><br><span class="line">				dataType: <span class="string">"jsonp"</span>, <span class="comment">//"xml", "html", "script", "json", "jsonp", "text".</span></span><br><span class="line">				jsonp: <span class="string">"callbackparam"</span>, <span class="comment">//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)</span></span><br><span class="line">				jsonpCallback: <span class="string">"success_jsonpCallback"</span>, <span class="comment">//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名</span></span><br><span class="line">				<span class="comment">//在请求之前调用的函数</span></span><br><span class="line">				beforeSend: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">					isAjaxing = <span class="literal">true</span>;</span><br><span class="line">					<span class="comment">//$("#btn_loading").css('display', '');</span></span><br><span class="line">				&#125;,</span><br><span class="line">				<span class="comment">//成功返回之后调用的函数             </span></span><br><span class="line">				success: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">					successfn(data);</span><br><span class="line">				&#125;,</span><br><span class="line">				<span class="comment">//调用执行后调用的函数</span></span><br><span class="line">				complete: <span class="function"><span class="keyword">function</span>(<span class="params">XMLHttpRequest, textStatus</span>) </span>&#123;</span><br><span class="line">					isAjaxing = <span class="literal">false</span>;</span><br><span class="line">					$(<span class="string">"#btn_loading"</span>).css(<span class="string">'display'</span>, <span class="string">'none'</span>);</span><br><span class="line">				&#125;,</span><br><span class="line">				<span class="comment">//调用出错执行的函数</span></span><br><span class="line">				error: <span class="function"><span class="keyword">function</span>(<span class="params">XMLHttpRequest, textStatus, errorThrown</span>) </span>&#123;</span><br><span class="line">					<span class="keyword">if</span> (XMLHttpRequest.status != <span class="string">'200'</span>) &#123;</span><br><span class="line">						alert(<span class="string">"AJAX请求错误：请求状态码："</span> + XMLHttpRequest.status + <span class="string">" readyState:"</span> + XMLHttpRequest.readyState + <span class="string">"错误："</span> + textStatus);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;);</span><br><span class="line">			clearTimeout(timer);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">&#125;;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="undefined"></span></span></span><br></pre></td></tr></table></figure>
 </code></pre>
       
     </div>
@@ -261,7 +218,15 @@ exports.axjsonp = function(url, data, successfn) {
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前后端交互/">前后端交互</a></li></ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/前端开发/">前端开发</a>
+	</div>
+
 
       
       <div class="clearfix"></div>
@@ -297,7 +262,7 @@ exports.axjsonp = function(url, data, successfn) {
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/25/jQuery源码的一些启示/">关于jQuery源码的一些思考</a>
+      <a class="article-title" href="/2016/01/25/jQuery源码的一些启示/">关于jQuery的一些思考</a>
     </h1>
   
 
@@ -312,14 +277,7 @@ exports.axjsonp = function(url, data, successfn) {
 <li>在压缩的时候有用</li>
 </ul>
 <p>而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。</p>
-<h3 id="u4E8C-_jQuery_u4E2D_u4F7F_u7528_u5F02_u6B65_u52A0_u8F7D_u987A_u5E8F_u6267_u884C_3F"><a href="#u4E8C-_jQuery_u4E2D_u4F7F_u7528_u5F02_u6B65_u52A0_u8F7D_u987A_u5E8F_u6267_u884C_3F" class="headerlink" title="二. jQuery中使用异步加载顺序执行?"></a><strong>二. jQuery中使用异步加载顺序执行?</strong></h3><pre><code>var dfd  = $.Deferred();
-setTimeout(function(){
-    alert(1);
-    dfd.resolve();
-},1000);
-dfd.done(function(){
-    alert(2);
-})
+<h3 id="u4E8C-_jQuery_u4E2D_u4F7F_u7528_u5F02_u6B65_u52A0_u8F7D_u987A_u5E8F_u6267_u884C_3F"><a href="#u4E8C-_jQuery_u4E2D_u4F7F_u7528_u5F02_u6B65_u52A0_u8F7D_u987A_u5E8F_u6267_u884C_3F" class="headerlink" title="二. jQuery中使用异步加载顺序执行?"></a><strong>二. jQuery中使用异步加载顺序执行?</strong></h3><pre><code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dfd  = $.Deferred();</span><br><span class="line">   setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">       alert(<span class="number">1</span>);</span><br><span class="line">       dfd.resolve();</span><br><span class="line">   &#125;,<span class="number">1000</span>);</span><br><span class="line">   dfd.done(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">       alert(<span class="number">2</span>);</span><br><span class="line">   &#125;)</span><br></pre></td></tr></table></figure>
 </code></pre><p>定时器虽然是异步执行，但是此例子中添加了.resolve()方法，是先弹1后弹2的。<br>
       
     </div>
@@ -396,9 +354,7 @@ dfd.done(function(){
 <p>书写如下</p>
 <pre><code>&gt; 这是一段引用
 </code></pre><h3 id="3-__u4EE3_u7801_u533A_u5757"><a href="#3-__u4EE3_u7801_u533A_u5757" class="headerlink" title="3. 代码区块"></a>3. 代码区块</h3><p>在代码块前面添加4个空格或者两个tab。效果如下。</p>
-<pre><code>function HelloWorld(){
-    alert(&quot;Hello World&quot;);
-}
+<pre><code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">HelloWorld</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	alert(<span class="string">"Hello World"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </code></pre><h3 id="4-__u56FE_u7247_u5F15_u7528"><a href="#4-__u56FE_u7247_u5F15_u7528" class="headerlink" title="4. 图片引用"></a>4. 图片引用</h3><p><img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png" alt="百度">;<br>书写如下</p>
 <pre><code>&gt;![百度](https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png);
 </code></pre>
