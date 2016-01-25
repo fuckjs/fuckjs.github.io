@@ -4,36 +4,21 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>关于jQuery源码的一些思考 | lisle</title>
+  <title>防止ajax访问冲突 | lisle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一. 最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
-
-因为window是作用域最顶端，查找速度比较慢
-在压缩的时候有用
-
-而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。
-二. jQuery中使用异步加载顺序执行?var dfd  = $.Deferred();">
+  <meta name="description" content="一个简易的需求，点一个按钮，则向服务器请求资源，不作处理时，多次点击后会有很多个请求在等待。粗暴的解决方式是点一次就将按钮disable掉。还有一种情况，比如加载页面前需要向后台的多个接口调用数据，同时发送两个以上请求；又比如实时搜索，每输入一个字符就要调用一次查询，调用速度很快。这样就会产生问题。
+这种情况如果不跨域的话ajax是可以通过设置为同步来解决的。但是在使用jsonp执行跨域请求的时候">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于jQuery源码的一些思考">
-<meta property="og:url" content="fuckjs.github.io/2016/01/25/jQuery源码的一些启示/index.html">
+<meta property="og:title" content="防止ajax访问冲突">
+<meta property="og:url" content="fuckjs.github.io/2016/01/25/防止ajax访问冲突/index.html">
 <meta property="og:site_name" content="lisle">
-<meta property="og:description" content="一. 最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
-
-因为window是作用域最顶端，查找速度比较慢
-在压缩的时候有用
-
-而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。
-二. jQuery中使用异步加载顺序执行?var dfd  = $.Deferred();">
-<meta property="og:updated_time" content="2016-01-25T06:54:48.502Z">
+<meta property="og:description" content="一个简易的需求，点一个按钮，则向服务器请求资源，不作处理时，多次点击后会有很多个请求在等待。粗暴的解决方式是点一次就将按钮disable掉。还有一种情况，比如加载页面前需要向后台的多个接口调用数据，同时发送两个以上请求；又比如实时搜索，每输入一个字符就要调用一次查询，调用速度很快。这样就会产生问题。
+这种情况如果不跨域的话ajax是可以通过设置为同步来解决的。但是在使用jsonp执行跨域请求的时候">
+<meta property="og:updated_time" content="2016-01-25T07:03:09.941Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于jQuery源码的一些思考">
-<meta name="twitter:description" content="一. 最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
-
-因为window是作用域最顶端，查找速度比较慢
-在压缩的时候有用
-
-而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。
-二. jQuery中使用异步加载顺序执行?var dfd  = $.Deferred();">
+<meta name="twitter:title" content="防止ajax访问冲突">
+<meta name="twitter:description" content="一个简易的需求，点一个按钮，则向服务器请求资源，不作处理时，多次点击后会有很多个请求在等待。粗暴的解决方式是点一次就将按钮disable掉。还有一种情况，比如加载页面前需要向后台的多个接口调用数据，同时发送两个以上请求；又比如实时搜索，每输入一个字符就要调用一次查询，调用速度很快。这样就会产生问题。
+这种情况如果不跨域的话ajax是可以通过设置为同步来解决的。但是在使用jsonp执行跨域请求的时候">
   
     <link rel="alternative" href="/atom.xml" title="lisle" type="application/atom+xml">
   
@@ -198,11 +183,11 @@
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-jQuery源码的一些启示" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-防止ajax访问冲突" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/01/25/jQuery源码的一些启示/" class="article-date">
-  	<time datetime="2016-01-25T06:22:22.000Z" itemprop="datePublished">2016-01-25</time>
+      <a href="/2016/01/25/防止ajax访问冲突/" class="article-date">
+  	<time datetime="2016-01-25T06:56:48.000Z" itemprop="datePublished">2016-01-25</time>
 </a>
     </div>
   
@@ -215,7 +200,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      关于jQuery源码的一些思考
+      防止ajax访问冲突
     </h1>
   
 
@@ -223,15 +208,7 @@
       
       <div class="article-info article-info-post">
         
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/2016-01/">2016-01</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
-	</div>
-
         
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/前端开发/">前端开发</a>
-	</div>
-
 
         <div class="clearfix"></div>
       </div>
@@ -239,26 +216,54 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="u4E00-__u6700_u5916_u5C42_u7684_u533F_u540D_u81EA_u6267_u884C_u51FD_u6570_u4E3A_u4EC0_u4E48_u4F20window_u548Cundefined_3F"><a href="#u4E00-__u6700_u5916_u5C42_u7684_u533F_u540D_u81EA_u6267_u884C_u51FD_u6570_u4E3A_u4EC0_u4E48_u4F20window_u548Cundefined_3F" class="headerlink" title="一. 最外层的匿名自执行函数为什么传window和undefined?"></a><strong>一. 最外层的匿名自执行函数为什么传window和undefined?</strong></h3><p>之所以传window作为参数，有两个原因。</p>
-<ul>
-<li>因为window是作用域最顶端，查找速度比较慢</li>
-<li>在压缩的时候有用</li>
-</ul>
-<p>而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。</p>
-<h3 id="u4E8C-_jQuery_u4E2D_u4F7F_u7528_u5F02_u6B65_u52A0_u8F7D_u987A_u5E8F_u6267_u884C_3F"><a href="#u4E8C-_jQuery_u4E2D_u4F7F_u7528_u5F02_u6B65_u52A0_u8F7D_u987A_u5E8F_u6267_u884C_3F" class="headerlink" title="二. jQuery中使用异步加载顺序执行?"></a><strong>二. jQuery中使用异步加载顺序执行?</strong></h3><pre><code>var dfd  = $.Deferred();
-setTimeout(function(){
-    alert(1);
-    dfd.resolve();
-},1000);
-dfd.done(function(){
-    alert(2);
-})
-</code></pre><p>定时器虽然是异步执行，但是此例子中添加了.resolve()方法，是先弹1后弹2的。<br><a id="more"></a></p>
-<h3 id="u4E09-_jQuery_u662F_u5982_u4F55_u5411_u5916_u63D0_u4F9B_u63A5_u53E3_u7684_3F"><a href="#u4E09-_jQuery_u662F_u5982_u4F55_u5411_u5916_u63D0_u4F9B_u63A5_u53E3_u7684_3F" class="headerlink" title="三.  jQuery是如何向外提供接口的?"></a><strong>三.  jQuery是如何向外提供接口的?</strong></h3><pre><code>jQuery.fn = jQuery.prototype = function(){
+        <p>一个简易的需求，点一个按钮，则向服务器请求资源，不作处理时，多次点击后会有很多个请求在等待。粗暴的解决方式是点一次就将按钮disable掉。还有一种情况，比如加载页面前需要向后台的多个接口调用数据，同时发送两个以上请求；又比如实时搜索，每输入一个字符就要调用一次查询，调用速度很快。这样就会产生问题。</p>
+<p>这种情况如果<strong>不跨域的话ajax是可以通过设置为同步来解决的</strong>。但是在使用jsonp执行跨域请求的时候，如果加载页面前需要向后台的多个接口调用数据，就会比较难解决。做项目的时候自己研究的一个解决方法，通过定时器来查询，仅供参考。思路就是：<strong>在前面加一个变量isAjaxing，当ajax开始调用的时候，判断isAjaxing是不是true；是false则说明没有调用，进入交互部分并关闭定时器；如果是true则说明正在调用，return返回。但因为数据必须查询出来加载到页面上，每隔50ms判断一次，直到可以正常交互</strong>。</p>
+<p>代码如下</p>
+<pre><code>var isAjaxing = false;
+exports.axjsonp = function(url, data, successfn) {
+        data = (data == null || data == &quot;&quot; || typeof(data) == &quot;undefined&quot;) ? {
+            &quot;date&quot;: new Date().getTime()
+        } : data;
 
-}
-</code></pre><p>例如:  <code>$(&quot;#div1).css()</code>  $()是上方构造函数包装好的一个方法，返回值是一个jQuery对象。因此可以调用jQuery原型上的相关方法。 </p>
+        var timer=setInterval(queryAjax,50);
+        function queryAjax(){
+            if(isAjaxing){
+                return;
+            }
+            $.ajax({
+                type: &quot;POST&quot;,
+                url: url,
+                data: data,
+                //返回数据的格式
+                dataType: &quot;jsonp&quot;, //&quot;xml&quot;, &quot;html&quot;, &quot;script&quot;, &quot;json&quot;, &quot;jsonp&quot;, &quot;text&quot;.
+                jsonp: &quot;callbackparam&quot;, //传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)
+                jsonpCallback: &quot;success_jsonpCallback&quot;, //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+                //在请求之前调用的函数
+                beforeSend: function() {
+                    isAjaxing = true;
+                    //$(&quot;#btn_loading&quot;).css(&apos;display&apos;, &apos;&apos;);
+                },
+                //成功返回之后调用的函数             
+                success: function(data) {
+                    successfn(data);
+                },
+                //调用执行后调用的函数
+                complete: function(XMLHttpRequest, textStatus) {
+                    isAjaxing = false;
+                    $(&quot;#btn_loading&quot;).css(&apos;display&apos;, &apos;none&apos;);
+                },
+                //调用出错执行的函数
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status != &apos;200&apos;) {
+                        alert(&quot;AJAX请求错误：请求状态码：&quot; + XMLHttpRequest.status + &quot; readyState:&quot; + XMLHttpRequest.readyState + &quot;错误：&quot; + textStatus);
+                    }
+                }
+            });
+            clearTimeout(timer);
+        }
 
+};
+</code></pre>
       
     </div>
     
@@ -267,18 +272,9 @@ dfd.done(function(){
     
 <nav id="article-nav">
   
-    <a href="/2016/01/25/防止ajax访问冲突/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          防止ajax访问冲突
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/25/常用markdown语法/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">hexo常用markdown语法(基础篇)</div>
+    <a href="/2016/01/25/jQuery源码的一些启示/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">关于jQuery源码的一些思考</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -313,7 +309,7 @@ dfd.done(function(){
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="jQuery源码的一些启示" data-title="关于jQuery源码的一些思考" data-url="fuckjs.github.io/2016/01/25/jQuery源码的一些启示/"></div>
+	<div class="ds-thread" data-thread-key="防止ajax访问冲突" data-title="防止ajax访问冲突" data-url="fuckjs.github.io/2016/01/25/防止ajax访问冲突/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
