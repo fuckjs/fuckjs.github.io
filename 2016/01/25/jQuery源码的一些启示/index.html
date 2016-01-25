@@ -6,34 +6,34 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>关于jQuery的一些思考 | lisle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一. 最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
+  <meta name="description" content="一. 源码中最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
 
 因为window是作用域最顶端，查找速度比较慢
 在压缩的时候有用
 
 而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。
-二. jQuery中使用异步加载顺序执行?12345678var dfd  = $.Def">
+二. jQuery中使用异步加载顺序执行?12345678var dfd  = $.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于jQuery的一些思考">
 <meta property="og:url" content="fuckjs.github.io/2016/01/25/jQuery源码的一些启示/index.html">
 <meta property="og:site_name" content="lisle">
-<meta property="og:description" content="一. 最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
+<meta property="og:description" content="一. 源码中最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
 
 因为window是作用域最顶端，查找速度比较慢
 在压缩的时候有用
 
 而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。
-二. jQuery中使用异步加载顺序执行?12345678var dfd  = $.Def">
-<meta property="og:updated_time" content="2016-01-25T08:09:51.330Z">
+二. jQuery中使用异步加载顺序执行?12345678var dfd  = $.">
+<meta property="og:updated_time" content="2016-01-25T08:23:17.128Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于jQuery的一些思考">
-<meta name="twitter:description" content="一. 最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
+<meta name="twitter:description" content="一. 源码中最外层的匿名自执行函数为什么传window和undefined?之所以传window作为参数，有两个原因。
 
 因为window是作用域最顶端，查找速度比较慢
 在压缩的时候有用
 
 而之所以传undefined，是因为undefined是可以被人为修改的。这样在内部就可以保证undefiend没有被修改。
-二. jQuery中使用异步加载顺序执行?12345678var dfd  = $.Def">
+二. jQuery中使用异步加载顺序执行?12345678var dfd  = $.">
   
     <link rel="alternative" href="/atom.xml" title="lisle" type="application/atom+xml">
   
@@ -243,7 +243,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="u4E00-__u6700_u5916_u5C42_u7684_u533F_u540D_u81EA_u6267_u884C_u51FD_u6570_u4E3A_u4EC0_u4E48_u4F20window_u548Cundefined_3F"><a href="#u4E00-__u6700_u5916_u5C42_u7684_u533F_u540D_u81EA_u6267_u884C_u51FD_u6570_u4E3A_u4EC0_u4E48_u4F20window_u548Cundefined_3F" class="headerlink" title="一. 最外层的匿名自执行函数为什么传window和undefined?"></a><strong>一. 最外层的匿名自执行函数为什么传window和undefined?</strong></h3><p>之所以传window作为参数，有两个原因。</p>
+        <h3 id="u4E00-__u6E90_u7801_u4E2D_u6700_u5916_u5C42_u7684_u533F_u540D_u81EA_u6267_u884C_u51FD_u6570_u4E3A_u4EC0_u4E48_u4F20window_u548Cundefined_3F"><a href="#u4E00-__u6E90_u7801_u4E2D_u6700_u5916_u5C42_u7684_u533F_u540D_u81EA_u6267_u884C_u51FD_u6570_u4E3A_u4EC0_u4E48_u4F20window_u548Cundefined_3F" class="headerlink" title="一. 源码中最外层的匿名自执行函数为什么传window和undefined?"></a><strong>一. 源码中最外层的匿名自执行函数为什么传window和undefined?</strong></h3><p>之所以传window作为参数，有两个原因。</p>
 <ul>
 <li>因为window是作用域最顶端，查找速度比较慢</li>
 <li>在压缩的时候有用</li>
